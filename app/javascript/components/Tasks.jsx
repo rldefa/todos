@@ -7,7 +7,11 @@ class Tasks extends Component {
         this.state = { 
             tasks: []
          }
+
+         this.deleteTask = this.deleteTask.bind(this);
+         this.renderTableData = this.renderTableData.bind(this);
     }
+    
     componentDidMount() {
         const url = "/api/v1/tasks/index";
         fetch(url)
@@ -21,8 +25,9 @@ class Tasks extends Component {
           .catch();
     }
 
-    deleteTask = (id) => {
-        const url = '/api/v1/destroy/${id}';
+    deleteTask(event) {
+        const task_id = event.target.value
+        const url = `/api/v1/destroy/${task_id}`;
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
         fetch(url, {
@@ -36,25 +41,27 @@ class Tasks extends Component {
               if (response.ok) {
                 return response.json();
               }
-              throw new Error("Network response was not ok.");
+              throw new Error("Fk u.");
             })
-            .then(() => this.props.history.push("/tasks"))
+            .then(response => {
+                let updated = this.state.tasks.slice();
+                updated = updated.filter(task => task.id != task_id)
+                this.setState({tasks: updated})
+            }
+            )
             .catch(error => console.log(error.message));
-        
-        this.componentDidMount();
     }
 
-    renderTableData(tasks) {
-        return tasks.map((task, index) => {
+    renderTableData() {
+        return this.state.tasks.map((task, index) => {
                 const { description, category } = task //destructuring
                 return (
                 <tr key={index} className='taskTable tableBody'>
                     <td>{description}</td>
                     <td>{category}</td>
-                    <td><button onClick={() => console.log(index)}>Delete</button></td>
+                    <td><button value={task.id} onClick={this.deleteTask}>Delete</button></td>
                 </tr>
-                )
-                
+                )     
         })
      }
 

@@ -28,11 +28,11 @@ class Api::V1::TasksController < ApplicationController
 
   private
 
-  def task_params
+  def task_params 
     params.permit(:description, :category)
   end
 
-  def recipe
-    @recipe ||= Recipe.find(params[:id])
+  def task
+    @task ||= Task.find(params[:id])
   end
 end
