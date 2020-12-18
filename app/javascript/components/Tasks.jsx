@@ -11,7 +11,7 @@ class Tasks extends Component {
          this.deleteTask = this.deleteTask.bind(this);
          this.renderTableData = this.renderTableData.bind(this);
     }
-    
+
     componentDidMount() {
         const url = "/api/v1/tasks/index";
         fetch(url)
@@ -95,6 +95,25 @@ class Tasks extends Component {
         return ( 
             <>
                 {tasks.length > 0 ? allTasks : noTask}
+                <form className='center d-flex'>
+                    <label className='formEle'>
+                    Description: 
+                    <input
+                        name="description"
+                        value={this.state.going}
+                        onChange={this.handleInputChange} />
+                    </label>
+                    <label className='formEle'>
+                    Category: 
+                    <input
+                        name="category"
+                        value={this.state.numberOfGuests}
+                        onChange={this.handleInputChange} />
+                    </label>
+                    <label className='formEle'>
+                        <input type='submit' value='Submit' />
+                    </label>
+                </form>
             </>
          );
     }
