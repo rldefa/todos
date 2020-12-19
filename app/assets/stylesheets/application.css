@@ -39,5 +39,20 @@
 }
 
 .formEle {
-  padding: 2px 5px;
+  padding: 50px 5px;
+}
+
+.tasks {
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: separate;
+  border-spacing: 20px;
+}
+
+.catInput {
+  width: 80px;
+}
+
+.desInput {
+  width: 500px;
 }
