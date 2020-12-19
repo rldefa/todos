@@ -15,21 +15,9 @@
  */
 .title {
   background-color: #ede982;
-}
-
-.newTask.btn {
-  width: 200px;
-  margin: auto;
-  display: block;
-  background-color: #293241;
-  color: #fff;
-  border: none;
-}
-
-.newTask.btn:hover {
-  background-color: rgb(16, 144, 147);
-  color: #fff;
-  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 60px;
+  font-weight: bolder;
 }
 
 .center {
@@ -39,14 +27,16 @@
 }
 
 .formEle {
-  padding: 50px 5px;
+  padding: 15px 7px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .tasks {
   margin-left: auto;
   margin-right: auto;
   border-collapse: separate;
-  border-spacing: 20px;
+  border-spacing: 15px;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .catInput {
@@ -55,4 +45,17 @@
 
 .desInput {
   width: 500px;
+}
+
+.taskTable {
+  border-bottom: 1px solid black;
+}
+
+.tableHeader {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.newTask {
+  background-color: lightgrey;
 }

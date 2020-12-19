@@ -149,7 +149,8 @@ class Tasks extends Component {
           );
         return ( 
             <>
-                <form className='center d-flex' onSubmit={this.handleSubmit}>
+                <form className='center d-flex newTask' onSubmit={this.handleSubmit}>
+                    <h4>Create New Task!</h4>
                     <label className='formEle'>
                         Category: 
                         <input
