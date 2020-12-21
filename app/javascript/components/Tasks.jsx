@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import Task from './Task';
 
 class Tasks extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            tasks: [],
-            description: '',
-            category: ''
-         }
-
-         this.deleteTask = this.deleteTask.bind(this);
-         this.renderTableData = this.renderTableData.bind(this);
-         this.handleChange = this.handleChange.bind(this);
-         this.handleSubmit = this.handleSubmit.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = { 
+      tasks: [],
+      description: '',
+      category: '',
     }
+
+      this.deleteTask = this.deleteTask.bind(this);
+      this.renderTableData = this.renderTableData.bind(this);
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleBlur = this.handleBlur.bind(this);
+  }
     
 
     componentDidMount() {
@@ -59,18 +61,20 @@ class Tasks extends Component {
 
     renderTableData() {
         return this.state.tasks.map((task, index) => {
-                const { description, category } = task //destructuring
+                const { description: des, category: cat } = task //destructuring
                 return (
-                <tr key={index} className='taskTable tableBody'>
-                    <td>{category}</td>
-                    <td>{description}</td>
-                    <td><button value={task.id} onClick={this.deleteTask}>Done</button></td>
-                </tr>
+                  <Task 
+                    description={des} 
+                    category={cat} 
+                    id={task.id} 
+                    key={index} 
+                    deleteTask={this.deleteTask}
+                  />  
                 )     
         })
      }
 
-     renderTableHeader() {
+    renderTableHeader() {
         return (
             <tr className='taskTable tableHeader'>
                 <td>Category</td>
@@ -80,13 +84,13 @@ class Tasks extends Component {
         )
      }
 
-     stripHtmlEntities(str) {
+    stripHtmlEntities(str) {
         return String(str)
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;");
       }
 
-     handleSubmit(event) {
+    handleSubmit(event) {
         event.preventDefault();
         const url = "/api/v1/tasks/create";
         const { description, category } = this.state;
@@ -108,30 +112,40 @@ class Tasks extends Component {
           },
           body: JSON.stringify(body)
         })
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            }
-            throw new Error("Network response was not ok.");
-          })
-          .then(response => {
-            this.componentDidMount();
-            this.setState({
-                description: '',
-                category: ''})
-          })
-          .catch(error => console.log(error.message));
+        
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error("Network response was not ok.");
+        })
+
+        .then(response => {
+          const new_state = this.state.tasks.slice(0)
+          new_state.unshift(response)
+          this.setState({
+              description: '',
+              category: '',
+              tasks: new_state})
+        })
+        .catch(error => console.log(error.message));
       }
 
-     handleChange(event) {
-        this.setState({ 
-            [event.target.name] : event.target.value 
-          })
-     }
+    handleChange(event) {
+      this.setState({ 
+        [event.target.name] : event.target.value 
+      })
+    }
 
+    handleBlur(event) {
+      this.setState({ 
+        text : event.target.value 
+      })
+    }
 
     render() { 
         const { tasks } = this.state;
+        console.log(tasks)
         const allTasks = (
             <div>
                 <table className='tasks'>
@@ -181,5 +195,5 @@ class Tasks extends Component {
     }
 }
 
- 
+
 export default Tasks;
