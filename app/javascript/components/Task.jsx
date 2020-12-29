@@ -13,6 +13,17 @@ class Task extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        // Any time props.email changes, update state.
+        if (nextProps.id !== this.props.id) {
+          this.setState({
+            id: nextProps.id,
+            category: nextProps.category,
+            description: nextProps.description
+          });
+        }
+    }
+
     handleChange(event) {
         this.setState({ 
           [event.target.name] : event.target.value
@@ -25,7 +36,7 @@ class Task extends Component {
             <tr className='taskTable tableBody'>
                 <td>{this.state.category}</td>
                 <td>{this.state.description}</td>
-                <td><button value={this.props.id} onClick={this.props.deleteTask}>Done</button></td>
+                <td><button value={this.state.id} onClick={this.props.deleteTask}>X</button></td>
             </tr>
          );
     }

@@ -33,6 +33,7 @@ class Tasks extends Component {
     }
 
     deleteTask(event) {
+        event.preventDefault();
         const task_id = event.target.value
         const url = `/api/v1/destroy/${task_id}`;
         const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -54,7 +55,8 @@ class Tasks extends Component {
                 let updated = this.state.tasks.slice();
                 updated = updated.filter(task => task.id != task_id)
                 this.setState({tasks: updated})
-            }
+            },
+            this.componentDidMount()
             )
             .catch(error => console.log(error.message));
     }
@@ -121,7 +123,7 @@ class Tasks extends Component {
         })
 
         .then(response => {
-          const new_state = this.state.tasks.slice(0)
+          let new_state = this.state.tasks.slice()
           new_state.unshift(response)
           this.setState({
               description: '',
@@ -145,13 +147,12 @@ class Tasks extends Component {
 
     render() { 
         const { tasks } = this.state;
-        console.log(tasks)
-        const allTasks = (
+        let allTasks = (
             <div>
                 <table className='tasks'>
                     <tbody>
                         {this.renderTableHeader()}
-                        {this.renderTableData(tasks)}
+                        {this.renderTableData()}
                     </tbody>
                 </table>
             </div>
